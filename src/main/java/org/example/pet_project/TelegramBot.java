@@ -147,7 +147,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             // Обработка текстовых сообщений
             handleMessage(update.getMessage());
         }
-    }
+    } // Обработка полученных сообщений от пользователя
 
     private void handleMessage(Message message) {
         String messageText = message.getText();
@@ -193,7 +193,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             default:
                 handleUserInput(chatId, messageText);
         }
-    }
+    }  // Обработчик сообщений от пользователя
 
     //  Ручной ввод кода валюты
     private void handleUserInput(long chatId, String input) {
@@ -270,7 +270,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         // Отправляем ответ на callback (убирает "часики" у кнопки)
         sendAnswerCallbackQuery(callbackQuery.getId());
-    }
+    } // Обработчик калбеков от нажатых инлайн кнопок
 
     private void navigateBack(long chatId) {
         UserState currentState = userStates.get(chatId);
