@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: PET_project
+#  datasource:
+#    url: ${POSTGRES_JDBC_URL:jdbc:postgresql://localhost:5432/postgres}
+#    username: ${POSTGRES_USERNAME:postgres}
+#    password: ${POSTGRES_PASSWORD:postgres}
+#    driver-class-name: org.postgresql.Driver
+#    hikari:
+#      maximum-pool-size: 10
+#  jpa:
+#    hibernate:
+#      ddl-auto: validate
+#    properties:
+#      hibernate.default_schema: ${POSTGRES_SCHEMA:pins}
+#  liquibase:
+#    default-schema: ${POSTGRES_SCHEMA:pins}
+#    change-log: classpath:/${POSTGRES_SCHEMA:pins}/master.yml
+
+bot:
+  name: "Home585_Pet_Bot"
+  token: ${BOT_TOKEN:8406968400:AAHmBQYXOh5kvNo9QHJVb-BrcKtMdCijrbg}
