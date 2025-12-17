@@ -3,6 +3,7 @@ package org.example.pet_project.services.impl;
 import org.example.pet_project.services.ValuteService;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +13,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 
-@Component
+@Service
 public class ValuteServiceImpl implements ValuteService {
 
 
