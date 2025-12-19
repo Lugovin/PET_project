@@ -1,7 +1,6 @@
 package org.example.pet_project.services;
 
 import org.example.pet_project.builder.InlineKeyboardBuilder;
-import org.example.pet_project.builder.KeyboardBuilder;
 import org.example.pet_project.builder.MessageBuilder;
 
 import org.example.pet_project.config.MenuConfig;
@@ -55,20 +54,20 @@ public class MenuService {
     public SendMessage createWelcomeMessage(long chatId, String userName) {
         return MessageBuilder.create(chatId)
                 .text(MenuConfig.Texts.getWelcomeText(userName))
-                .replyKeyboard(
-                        KeyboardBuilder.create()
-                                .row()
-                                .button("💱 Валюты")
-                                .button("⚙️ Настройки")
-                                .endRow()
-                                .row()
-                                .button("❓ Помощь")
-                                .button("🏠 Главная")
-                                .endRow()
-                                .resizeKeyboard(true)
-                                .oneTimeKeyboard(false)
-                                .build()
-                )
+//                .replyKeyboard(
+//                        KeyboardBuilder.create()
+//                                .row()
+//                                .button("💱 Валюты")
+//                                .button("⚙️ Настройки")
+//                                .endRow()
+//                                .row()
+//                                .button("❓ Помощь")
+//                                .button("🏠 Главная")
+//                                .endRow()
+//                                .resizeKeyboard(true)
+//                                .oneTimeKeyboard(false)
+//                                .build()
+//                )
                 .build();
     }
 
@@ -111,6 +110,10 @@ public class MenuService {
                 .inlineKeyboard(keyboard)
                 .build();
     }
+
+
+
+
 
     // Вспомогательные методы
 

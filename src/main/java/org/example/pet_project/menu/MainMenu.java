@@ -33,7 +33,7 @@ public class MainMenu extends BaseMenu {
                 .endRow();
 
         // Кнопки основных валют
-        addCurrencyButtons(builder);
+       // addCurrencyButtons(builder);
 
         // Последний ряд
         builder.row()
