@@ -30,6 +30,10 @@ public class MainMenu extends BaseMenu {
                 .row()
                 .button("❓ Помощь", MenuConfig.CB_HELP)
                 .button("ℹ️ О боте", MenuConfig.CB_ABOUT)
+                .endRow()
+                .row()
+                .button("ВКЛ", MenuConfig.CB_CURRENCY_MENU)
+                .button("ВЫКЛ", MenuConfig.CB_SETTINGS)
                 .endRow();
 
         // Кнопки основных валют
