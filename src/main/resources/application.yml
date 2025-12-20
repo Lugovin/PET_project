@@ -20,3 +20,7 @@ spring:
 bot:
   name: "Home585_Pet_Bot"
   token: ${BOT_TOKEN:8406968400:AAHmBQYXOh5kvNo9QHJVb-BrcKtMdCijrbg}
+
+arduino:
+  ip: "192.168.0.177"
+  port: 8080

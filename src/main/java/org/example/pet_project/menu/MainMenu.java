@@ -28,6 +28,10 @@ public class MainMenu extends BaseMenu {
                 .button("⚙️ Настройки", MenuConfig.CB_SETTINGS)
                 .endRow()
                 .row()
+                .button("ВКЛ", "RELAY:0:ON")
+                .button("ВЫКЛ", "RELAY:0:OFF")
+                .endRow()
+                .row()
                 .button("❓ Помощь", MenuConfig.CB_HELP)
                 .button("ℹ️ О боте", MenuConfig.CB_ABOUT)
                 .endRow();

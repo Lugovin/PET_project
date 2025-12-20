@@ -1,6 +1,8 @@
 package org.example.pet_project.bot.handler;
 
 
+import org.example.pet_project.arduino.ArduinoEthernetClient;
+import org.example.pet_project.arduino.ArduinoService;
 import org.example.pet_project.config.MenuConfig;
 import org.example.pet_project.services.MenuService;
 import org.example.pet_project.services.UserSessionService;
@@ -16,10 +18,12 @@ public class CallbackQueryHandler {
 
     private final MenuService menuService;
     private final UserSessionService userSessionService;
+    private final ArduinoService arduinoService;
 
-    public CallbackQueryHandler(MenuService menuService, UserSessionService userSessionService) {
+    public CallbackQueryHandler(MenuService menuService, UserSessionService userSessionService,ArduinoService arduinoService) {
         this.menuService = menuService;
         this.userSessionService = userSessionService;
+        this.arduinoService = arduinoService;
     }
 
     public CallbackResult handleCallbackQuery(CallbackQuery callbackQuery) {
@@ -83,6 +87,16 @@ public class CallbackQueryHandler {
                         default:
                             result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU); // ← ИСПРАВЛЕНО
                     }
+                    break;
+                case "RELAY:0:ON":
+
+                    arduinoService.setRelay(0,true);
+                    result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU);
+                    break;
+                case "RELAY:0:OFF":
+
+                    arduinoService.setRelay(0,false);
+                    result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU);
                     break;
             }
         }
