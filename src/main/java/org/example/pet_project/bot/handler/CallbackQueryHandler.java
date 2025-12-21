@@ -1,11 +1,15 @@
 package org.example.pet_project.bot.handler;
 
 
+import jakarta.ws.rs.ext.ParamConverter;
 import org.example.pet_project.arduino.ArduinoCommandService;
+import org.example.pet_project.bot.TelegramBot;
 import org.example.pet_project.config.MenuConfig;
 import org.example.pet_project.services.MenuService;
 import org.example.pet_project.services.UserSessionService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 
@@ -19,12 +23,14 @@ public class CallbackQueryHandler {
     private final MenuService menuService;
     private final UserSessionService userSessionService;
     private final ArduinoCommandService arduinoCommandService;
+    private final TelegramBot bot;
     String responce = "";
 
-    public CallbackQueryHandler(MenuService menuService, UserSessionService userSessionService, ArduinoCommandService arduinoCommandService) {
+    public CallbackQueryHandler(MenuService menuService, UserSessionService userSessionService, ArduinoCommandService arduinoCommandService, @Lazy TelegramBot bot) {
         this.menuService = menuService;
         this.userSessionService = userSessionService;
         this.arduinoCommandService = arduinoCommandService;
+        this.bot = bot;
     }
 
     public CallbackResult handleCallbackQuery(CallbackQuery callbackQuery) {
@@ -111,6 +117,12 @@ public class CallbackQueryHandler {
 
                     responce  = arduinoCommandService.getStatus();
                     System.out.println("Responce from Arduino: " + responce);
+
+                    // 3. Отправка в Telegram
+                    SendMessage message = new SendMessage();
+                    message.setChatId(chatId);
+                    message.setText("📟 Статус устройства:\n" + responce);
+                    bot.send(message);
                     result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU);
                     break;
             }
