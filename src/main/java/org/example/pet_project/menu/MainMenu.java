@@ -40,13 +40,7 @@ public class MainMenu extends BaseMenu {
                 .button("ℹ️ О боте", MenuConfig.CB_ABOUT)
                 .endRow();
 
-        // Кнопки основных валют
-       // addCurrencyButtons(builder);
 
-        // Последний ряд
-        builder.row()
-                .button("📋 Все валюты", MenuConfig.CB_ALL_CURRENCIES)
-                .endRow();
 
         InlineKeyboardMarkup keyboard = builder.build();
 
@@ -56,15 +50,15 @@ public class MainMenu extends BaseMenu {
                 .build();
     }
 
-    private void addCurrencyButtons(InlineKeyboardBuilder builder) {
-        for (int i = 0; i < MenuConfig.MAIN_CURRENCIES.length; i += 3) {
-            builder.row();
-            for (int j = 0; j < 3 && (i + j) < MenuConfig.MAIN_CURRENCIES.length; j++) {
-                String[] currency = MenuConfig.MAIN_CURRENCIES[i + j];
-                String emoji = currency[1].split(" ")[0];
-                builder.button(emoji, MenuConfig.CB_CURRENCY_SELECT + currency[0]);
-            }
-            builder.endRow();
-        }
-    }
+//    private void addCurrencyButtons(InlineKeyboardBuilder builder) {
+//        for (int i = 0; i < MenuConfig.MAIN_CURRENCIES.length; i += 3) {
+//            builder.row();
+//            for (int j = 0; j < 3 && (i + j) < MenuConfig.MAIN_CURRENCIES.length; j++) {
+//                String[] currency = MenuConfig.MAIN_CURRENCIES[i + j];
+//                String emoji = currency[1].split(" ")[0];
+//                builder.button(emoji, MenuConfig.CB_CURRENCY_SELECT + currency[0]);
+//            }
+//            builder.endRow();
+//        }
+//    }
 }

@@ -124,6 +124,8 @@ public class CallbackQueryHandler {
                     message.setText("📟 Статус устройства:\n" + responce);
                     bot.send(message);
                     result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU);
+
+
                     break;
             }
         }
@@ -163,7 +165,7 @@ public class CallbackQueryHandler {
             SHOW_ABOUT_MENU,
             SHOW_ALL_CURRENCIES,
             DELETE_PREVIOUS_MENU,
-            SHOW_ARDUINO_ANSWER
+            SEND_ARDUINO_RESPONSE
         }
 
         // Геттеры и сеттеры
