@@ -50,15 +50,4 @@ public class MainMenu extends BaseMenu {
                 .build();
     }
 
-//    private void addCurrencyButtons(InlineKeyboardBuilder builder) {
-//        for (int i = 0; i < MenuConfig.MAIN_CURRENCIES.length; i += 3) {
-//            builder.row();
-//            for (int j = 0; j < 3 && (i + j) < MenuConfig.MAIN_CURRENCIES.length; j++) {
-//                String[] currency = MenuConfig.MAIN_CURRENCIES[i + j];
-//                String emoji = currency[1].split(" ")[0];
-//                builder.button(emoji, MenuConfig.CB_CURRENCY_SELECT + currency[0]);
-//            }
-//            builder.endRow();
-//        }
-//    }
 }

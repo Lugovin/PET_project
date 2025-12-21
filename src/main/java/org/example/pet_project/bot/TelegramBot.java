@@ -1,21 +1,22 @@
 package org.example.pet_project.bot;
 
 
-
+import org.example.pet_project.arduino.ArduinoCommandService;
+import org.example.pet_project.bot.handler.CallbackQueryHandler;
+import org.example.pet_project.bot.handler.MessageHandler;
+import org.example.pet_project.config.BotProperties;
+import org.example.pet_project.services.MenuService;
+import org.example.pet_project.services.UserSessionService;
+import org.example.pet_project.services.ValuteService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.example.pet_project.bot.handler.CallbackQueryHandler;
-import org.example.pet_project.bot.handler.MessageHandler;
-import org.example.pet_project.services.MenuService;
-import org.example.pet_project.services.UserSessionService;
-import org.example.pet_project.services.ValuteService;
-import org.example.pet_project.config.BotProperties;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -30,19 +31,22 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final MessageHandler messageHandler;
     private final CallbackQueryHandler callbackQueryHandler;
     private final UserSessionService userSessionService;
+    private final ArduinoCommandService arduinoCommandService;
 
     public TelegramBot(BotProperties botProperties,
                        ValuteService valuteService,
                        MenuService menuService,
                        MessageHandler messageHandler,
                        CallbackQueryHandler callbackQueryHandler,
-                       UserSessionService userSessionService) {
+                       UserSessionService userSessionService,
+                       ArduinoCommandService arduinoCommandService) {
         this.botProperties = botProperties;
         this.valuteService = valuteService;
         this.menuService = menuService;
         this.messageHandler = messageHandler;
         this.callbackQueryHandler = callbackQueryHandler;
         this.userSessionService = userSessionService;
+        this.arduinoCommandService = arduinoCommandService;
     }
 
     @Override
@@ -122,7 +126,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 break;
 
 
-
 //            case ALL_CURRENCIES:
 //                showAllCurrencies(chatId);
 //                break;
@@ -151,7 +154,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void handleCallbackQuery(Update update) throws TelegramApiException {
-        org.telegram.telegrambots.meta.api.objects.CallbackQuery callbackQuery = update.getCallbackQuery();
+        CallbackQuery callbackQuery = update.getCallbackQuery();
         long chatId = callbackQuery.getMessage().getChatId();
 
         // Удаляем предыдущее меню
@@ -186,9 +189,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                 execute(menuService.createAboutMenu(chatId));
                 break;
 
-//            case SHOW_ALL_CURRENCIES:
-//                showAllCurrencies(chatId);
-//                break;
+            case SHOW_ARDUINO_RESPONSE:
+                showArduinoResponce(chatId, arduinoCommandService.getStatus());
+
+                break;
         }
 
         // Отправляем ответ на callback (убирает "часики" у кнопки)
@@ -220,24 +224,14 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-//    private void showAllCurrencies(long chatId) {
-//        try {
-//            // Получаем список всех валют из сервиса
-//            String allCurrencies = valuteService.getAllCurrenciesNames();
-//            sendMenu(menuService.createAllCurrenciesMenu(chatId, allCurrencies), chatId);
-//
-//        } catch (Exception e) {
-//            try {
-//                execute(menuService.createErrorMessage(
-//                        chatId,
-//                        "Не удалось загрузить список валют. Попробуйте позже."
-//                ));
-//                sendMenu(menuService.createCurrencyMenu(chatId), chatId);
-//            } catch (TelegramApiException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//    }
+
+    private void showArduinoResponce(long chatId, String responce) {
+        try {
+            execute(menuService.createArduinoAnswerMenu(chatId, responce));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void sendMenu(SendMessage menuMessage, long chatId) throws TelegramApiException {
         Message sentMessage = execute(menuMessage);

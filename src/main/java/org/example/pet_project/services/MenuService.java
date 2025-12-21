@@ -2,9 +2,9 @@ package org.example.pet_project.services;
 
 import org.example.pet_project.builder.InlineKeyboardBuilder;
 import org.example.pet_project.builder.MessageBuilder;
-
 import org.example.pet_project.config.MenuConfig;
 import org.example.pet_project.menu.AboutMenu;
+import org.example.pet_project.menu.ArduinoAnswerMenu;
 import org.example.pet_project.menu.CurrencyMenu;
 import org.example.pet_project.menu.HelpMenu;
 import org.example.pet_project.menu.MainMenu;
@@ -24,50 +24,62 @@ public class MenuService {
     private final SettingsMenu settingsMenu;
     private final HelpMenu helpMenu;
     private final AboutMenu aboutMenu;
+    private final ArduinoAnswerMenu arduinoAnswerMenu;
 
     public MenuService(MenuConfig config,
                        MainMenu mainMenu,
                        CurrencyMenu currencyMenu,
                        SettingsMenu settingsMenu,
                        HelpMenu helpMenu,
-                       AboutMenu aboutMenu) {
+                       AboutMenu aboutMenu,
+                       ArduinoAnswerMenu arduinoAnswerMenu) {
         this.config = config;
         this.mainMenu = mainMenu;
         this.currencyMenu = currencyMenu;
         this.settingsMenu = settingsMenu;
         this.helpMenu = helpMenu;
         this.aboutMenu = aboutMenu;
+        this.arduinoAnswerMenu = arduinoAnswerMenu;
     }
 
     // Геттеры для констант (чтобы другие классы могли их использовать)
-    public String getMainMenuCallback() { return MenuConfig.CB_MAIN_MENU; }
-    public String getCurrencyMenuCallback() { return MenuConfig.CB_CURRENCY_MENU; }
-    public String getCurrencySelectPrefix() { return MenuConfig.CB_CURRENCY_SELECT; }
-    public String getSettingsCallback() { return MenuConfig.CB_SETTINGS; }
-    public String getHelpCallback() { return MenuConfig.CB_HELP; }
-    public String getAboutCallback() { return MenuConfig.CB_ABOUT; }
-    public String getAllCurrenciesCallback() { return MenuConfig.CB_ALL_CURRENCIES; }
-    public String getBackCallback() { return MenuConfig.CB_BACK; }
+    public String getMainMenuCallback() {
+        return MenuConfig.CB_MAIN_MENU;
+    }
+
+    public String getCurrencyMenuCallback() {
+        return MenuConfig.CB_CURRENCY_MENU;
+    }
+
+    public String getCurrencySelectPrefix() {
+        return MenuConfig.CB_CURRENCY_SELECT;
+    }
+
+    public String getSettingsCallback() {
+        return MenuConfig.CB_SETTINGS;
+    }
+
+    public String getHelpCallback() {
+        return MenuConfig.CB_HELP;
+    }
+
+    public String getAboutCallback() {
+        return MenuConfig.CB_ABOUT;
+    }
+
+    public String getAllCurrenciesCallback() {
+        return MenuConfig.CB_ALL_CURRENCIES;
+    }
+
+    public String getBackCallback() {
+        return MenuConfig.CB_BACK;
+    }
 
     // Основные методы создания меню
 
     public SendMessage createWelcomeMessage(long chatId, String userName) {
         return MessageBuilder.create(chatId)
                 .text(MenuConfig.Texts.getWelcomeText(userName))
-//                .replyKeyboard(
-//                        KeyboardBuilder.create()
-//                                .row()
-//                                .button("💱 Валюты")
-//                                .button("⚙️ Настройки")
-//                                .endRow()
-//                                .row()
-//                                .button("❓ Помощь")
-//                                .button("🏠 Главная")
-//                                .endRow()
-//                                .resizeKeyboard(true)
-//                                .oneTimeKeyboard(false)
-//                                .build()
-//                )
                 .build();
     }
 
@@ -84,7 +96,7 @@ public class MenuService {
     }
 
     public SendMessage createArduinoAnswerMenu(long chatId, String answer) {
-        return currencyMenu.createArduinoAnswerMessage(chatId, answer);
+        return arduinoAnswerMenu.createArduinoResponceMenu(chatId, answer);
     }
 
     public SendMessage createSettingsMenu(long chatId) {
@@ -114,9 +126,6 @@ public class MenuService {
                 .inlineKeyboard(keyboard)
                 .build();
     }
-
-
-
 
 
     // Вспомогательные методы
