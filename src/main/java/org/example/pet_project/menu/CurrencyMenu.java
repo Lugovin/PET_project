@@ -62,4 +62,21 @@ public class CurrencyMenu extends BaseMenu {
                 .inlineKeyboard(keyboard)
                 .build();
     }
+
+
+    /**
+     * Создает меню с выводом ответа от ардуино ВРЕМЕННОООО!!!!!!!
+     */
+    public SendMessage createArduinoAnswerMessage(long chatId, String answer) {
+        var keyboard = InlineKeyboardBuilder.create()
+                .row()
+                .button("🏠 Главная", MenuConfig.CB_MAIN_MENU)
+                .endRow()
+                .build();
+
+        return MessageBuilder.create(chatId)
+                .text(answer)
+                .inlineKeyboard(keyboard)
+                .build();
+    }
 }

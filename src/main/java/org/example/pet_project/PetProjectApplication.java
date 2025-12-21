@@ -1,7 +1,7 @@
 package org.example.pet_project;
 
 
-import org.example.pet_project.arduino.EthernetControlPanel;
+//import org.example.pet_project.arduino.EthernetControlPanel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
@@ -20,12 +20,12 @@ public class PetProjectApplication {
         ConfigurableApplicationContext context =
                 SpringApplication.run(PetProjectApplication.class, args);
 
-        // Получаем GUI bean из контекста
-        EthernetControlPanel gui = context.getBean(EthernetControlPanel.class);
-
-        // Показываем GUI
-        SwingUtilities.invokeLater(() -> {
-            gui.setVisible(true);
-        });
+//        // Получаем GUI bean из контекста
+//        EthernetControlPanel gui = context.getBean(EthernetControlPanel.class);
+//
+//        // Показываем GUI
+//        SwingUtilities.invokeLater(() -> {
+//            gui.setVisible(true);
+//        });
     }
 }

@@ -32,6 +32,10 @@ public class MainMenu extends BaseMenu {
                 .button("ВЫКЛ", "RELAY:0:OFF")
                 .endRow()
                 .row()
+                .button("GET ALL", "GETALL")
+                .button("STATUS", "STATUS")
+                .endRow()
+                .row()
                 .button("❓ Помощь", MenuConfig.CB_HELP)
                 .button("ℹ️ О боте", MenuConfig.CB_ABOUT)
                 .endRow();

@@ -17,7 +17,8 @@ public class UserSessionService {
         VIEWING_CURRENCY,
         SETTINGS,
         HELP,
-        ALL_CURRENCIES
+        ALL_CURRENCIES,
+        ARDUINO_ANSWER
     }
 
     private final Map<Long, UserState> userStates = new HashMap<>();

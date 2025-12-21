@@ -83,6 +83,10 @@ public class MenuService {
         return currencyMenu.createResultMenu(chatId, currencyInfo);
     }
 
+    public SendMessage createArduinoAnswerMenu(long chatId, String answer) {
+        return currencyMenu.createArduinoAnswerMessage(chatId, answer);
+    }
+
     public SendMessage createSettingsMenu(long chatId) {
         return settingsMenu.createMenu(chatId);
     }

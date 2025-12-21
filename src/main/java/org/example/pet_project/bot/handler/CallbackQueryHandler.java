@@ -1,13 +1,13 @@
 package org.example.pet_project.bot.handler;
 
 
-import org.example.pet_project.arduino.ArduinoEthernetClient;
-import org.example.pet_project.arduino.ArduinoService;
+import org.example.pet_project.arduino.ArduinoCommandService;
 import org.example.pet_project.config.MenuConfig;
 import org.example.pet_project.services.MenuService;
 import org.example.pet_project.services.UserSessionService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+
 
 
 /**
@@ -18,12 +18,13 @@ public class CallbackQueryHandler {
 
     private final MenuService menuService;
     private final UserSessionService userSessionService;
-    private final ArduinoService arduinoService;
+    private final ArduinoCommandService arduinoCommandService;
+    String responce = "";
 
-    public CallbackQueryHandler(MenuService menuService, UserSessionService userSessionService,ArduinoService arduinoService) {
+    public CallbackQueryHandler(MenuService menuService, UserSessionService userSessionService, ArduinoCommandService arduinoCommandService) {
         this.menuService = menuService;
         this.userSessionService = userSessionService;
-        this.arduinoService = arduinoService;
+        this.arduinoCommandService = arduinoCommandService;
     }
 
     public CallbackResult handleCallbackQuery(CallbackQuery callbackQuery) {
@@ -90,12 +91,26 @@ public class CallbackQueryHandler {
                     break;
                 case "RELAY:0:ON":
 
-                    arduinoService.setRelay(0,true);
+                    responce  = arduinoCommandService.setRelay(0, true);
+                    System.out.println("Responce from Arduino: " + responce);
                     result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU);
                     break;
                 case "RELAY:0:OFF":
 
-                    arduinoService.setRelay(0,false);
+                    responce  = arduinoCommandService.setRelay(0, false);
+                    System.out.println("Responce from Arduino: " + responce);
+                    result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU);
+                    break;
+                case "GETALL":
+
+                    responce  = arduinoCommandService.readAllSensors();
+                    System.out.println("Responce from Arduino: " + responce);
+                    result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU);
+                    break;
+                case "STATUS":
+
+                    responce  = arduinoCommandService.getStatus();
+                    System.out.println("Responce from Arduino: " + responce);
                     result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU);
                     break;
             }
@@ -135,17 +150,33 @@ public class CallbackQueryHandler {
             SHOW_HELP_MENU,
             SHOW_ABOUT_MENU,
             SHOW_ALL_CURRENCIES,
-            DELETE_PREVIOUS_MENU
+            DELETE_PREVIOUS_MENU,
+            SHOW_ARDUINO_ANSWER
         }
 
         // Геттеры и сеттеры
-        public long getChatId() { return chatId; }
-        public void setChatId(long chatId) { this.chatId = chatId; }
+        public long getChatId() {
+            return chatId;
+        }
 
-        public CallbackAction getAction() { return action; }
-        public void setAction(CallbackAction action) { this.action = action; }
+        public void setChatId(long chatId) {
+            this.chatId = chatId;
+        }
 
-        public String getCurrencyCode() { return currencyCode; }
-        public void setCurrencyCode(String currencyCode) { this.currencyCode = currencyCode; }
+        public CallbackAction getAction() {
+            return action;
+        }
+
+        public void setAction(CallbackAction action) {
+            this.action = action;
+        }
+
+        public String getCurrencyCode() {
+            return currencyCode;
+        }
+
+        public void setCurrencyCode(String currencyCode) {
+            this.currencyCode = currencyCode;
+        }
     }
 }

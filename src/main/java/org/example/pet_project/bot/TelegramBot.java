@@ -121,6 +121,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                 sendMenu(menuService.createHelpMenu(chatId), chatId);
                 break;
 
+
+
 //            case ALL_CURRENCIES:
 //                showAllCurrencies(chatId);
 //                break;
