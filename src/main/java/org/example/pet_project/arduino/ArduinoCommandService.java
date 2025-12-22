@@ -13,7 +13,6 @@ public class ArduinoCommandService {
         this.arduinoConnectService = arduinoConnectService;
     }
 
-
     /**
      * Управление реле
      */
@@ -22,7 +21,6 @@ public class ArduinoCommandService {
         System.out.println("RELAY:" + relayNumber + ":" + (state ? "ON" : "OFF"));
         return arduinoConnectService.sendCommand(command);
     }
-
     /**
      * Чтение датчика
      */

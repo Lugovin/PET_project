@@ -2,6 +2,7 @@ package org.example.pet_project.bot;
 
 
 import org.example.pet_project.arduino.ArduinoCommandService;
+import org.example.pet_project.arduino.ArduinoConnectService;
 import org.example.pet_project.bot.handler.CallbackQueryHandler;
 import org.example.pet_project.bot.handler.MessageHandler;
 import org.example.pet_project.config.BotProperties;
@@ -32,6 +33,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final CallbackQueryHandler callbackQueryHandler;
     private final UserSessionService userSessionService;
     private final ArduinoCommandService arduinoCommandService;
+    private final ArduinoConnectService arduinoConnectService;
 
     public TelegramBot(BotProperties botProperties,
                        ValuteService valuteService,
@@ -39,6 +41,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                        MessageHandler messageHandler,
                        CallbackQueryHandler callbackQueryHandler,
                        UserSessionService userSessionService,
+                        ArduinoConnectService arduinoConnectService,
                        ArduinoCommandService arduinoCommandService) {
         this.botProperties = botProperties;
         this.valuteService = valuteService;
@@ -46,6 +49,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         this.messageHandler = messageHandler;
         this.callbackQueryHandler = callbackQueryHandler;
         this.userSessionService = userSessionService;
+        this.arduinoConnectService = arduinoConnectService;
         this.arduinoCommandService = arduinoCommandService;
     }
 
@@ -125,11 +129,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 sendMenu(menuService.createHelpMenu(chatId), chatId);
                 break;
 
-
-//            case ALL_CURRENCIES:
-//                showAllCurrencies(chatId);
-//                break;
-
             default:
                 sendMenu(menuService.createMainMenu(chatId), chatId);
         }
@@ -189,9 +188,16 @@ public class TelegramBot extends TelegramLongPollingBot {
                 execute(menuService.createAboutMenu(chatId));
                 break;
 
-            case SHOW_ARDUINO_RESPONSE:
-                showArduinoResponce(chatId, arduinoCommandService.getStatus());
+            case SHOW_ARDUINO_RESPONSE_STATUS:
+                showArduinoStatusResponce(chatId, arduinoCommandService.getStatus());
+                break;
 
+            case SHOW_ARDUINO_RESPONSE_RELAY:
+                showArduinoRelayResponce(chatId, CallbackQueryHandler.CallbackResult.getRelayNumber(), CallbackQueryHandler.CallbackResult.getRelayStatus());
+                break;
+
+            case SHOW_ARDUINO_CONNECT_STATUS:
+                showArduinoConnectResponce(chatId, CallbackQueryHandler.CallbackResult.connect());
                 break;
         }
 
@@ -225,9 +231,30 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
 
-    private void showArduinoResponce(long chatId, String responce) {
+    private void showArduinoStatusResponce(long chatId, String responce) {
         try {
             execute(menuService.createArduinoAnswerMenu(chatId, responce));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showArduinoRelayResponce(long chatId, int number, boolean status) {
+        try {
+            //arduinoCommandService.setRelay(number, status);
+            execute(menuService.createArduinoAnswerMenu(chatId, arduinoCommandService.setRelay(number, status)));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showArduinoConnectResponce(long chatId, boolean status) {
+        try {
+            if (status) {
+                execute(menuService.createArduinoAnswerMenu(chatId, arduinoConnectService.connect()));
+            } else {
+                execute(menuService.createArduinoAnswerMenu(chatId, arduinoConnectService.disconnect()));
+            }
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

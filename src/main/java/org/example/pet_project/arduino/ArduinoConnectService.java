@@ -53,17 +53,45 @@ public class ArduinoConnectService {
         System.out.println("Arduino client создан для IP: " + ipAddress + " : " + port);
     }
 
+    // Добавляем методы для внешнего управления
+    public boolean isConnected() {
+        return connected;
+    }
 
+    public String getConnectionStatus() {
+        if (connected) {
+            return "✅ Подключено к " + ipAddress + ":" + port;
+        } else {
+            return "❌ Не подключено";
+        }
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    // Убираем авто-коннект в @PostConstruct
     @PostConstruct
     public void init() {
-        // Подключаемся один раз при старте приложения
-        connect();
+        // Не подключаемся автоматически, ждем команды от пользователя
+        System.out.println("Arduino сервис инициализирован. Ожидание команды подключения...");
     }
+
+
+//    @PostConstruct
+//    public void init() {
+//        // Подключаемся один раз при старте приложения
+//        connect();
+//    }
 
     /**
      * Подключение к Arduino
      */
-    public boolean connect() {
+    public String connect() {
         try {
             socket = new Socket();
             socket.connect(new InetSocketAddress(ipAddress, port), 3000);
@@ -82,7 +110,7 @@ public class ArduinoConnectService {
             }
 
             System.out.println("Подключено к " + ipAddress + ":" + port);
-            return true;
+            return "Arduino is connected!";
 
         } catch (Exception e) {
             connected = false;
@@ -90,7 +118,7 @@ public class ArduinoConnectService {
                 connectionListener.onConnectionError(e.getMessage());
             }
             System.err.println("Ошибка подключения: " + e.getMessage());
-            return false;
+            return "Can not connect to Arduino.";
         }
     }
 
@@ -120,11 +148,10 @@ public class ArduinoConnectService {
         });
     }
 
-
     /**
      * Отключение
      */
-    public void disconnect() {
+    public String disconnect() {
         connected = false;
 
         try {
@@ -135,56 +162,49 @@ public class ArduinoConnectService {
             }
         } catch (Exception e) {
             System.err.println("Ошибка при отключении: " + e.getMessage());
+            return "ERROR! NOT DISCONNECTED!";
         }
 
         if (connectionListener != null) {
             connectionListener.onDisconnected();
         }
 
-        executor.shutdown();
+        //executor.shutdown();
         System.out.println("Отключено от " + ipAddress);
+        return "Arduino is DISCONNECTED!";
     }
 
 
     public String sendCommand(String command) {
-        return sendCommand(command, 1000);
+        return sendCommand(command, 3000);
     }
 
     public String sendCommand(String command, int timeoutMs) {
-        if (!connected) {
-            return "ERROR:NOT_CONNECTED";
-        }
+        if (!connected) return "ERROR:ARDUINO NOT CONNECTED";
 
-        Future<String> future = executor.submit(() -> {
+        synchronized (this) { // Защита от параллельных отправок
             try {
-                // Отправка команды
+                socket.setSoTimeout(timeoutMs);
                 out.println(command);
+                String response = in.readLine();
 
-                // Чтение ответа с таймаутом
-                long startTime = System.currentTimeMillis();
-                while (System.currentTimeMillis() - startTime < timeoutMs) {
-                    if (in.ready()) {
-                        String response = in.readLine();
-                        if (response != null) {
-                            if (dataListener != null) {
-                                dataListener.onCommandResponse(command, response);
-                            }
-                            return response;
-                        }
-                    }
-                    Thread.sleep(10);
+                if (dataListener != null) {
+                    dataListener.onCommandResponse(command, response);
                 }
+                return response;
+
+            } catch (SocketTimeoutException e) {
                 return "ERROR:TIMEOUT";
-
             } catch (Exception e) {
+                disconnect(); // При ошибке разрываем соединение
                 return "ERROR:" + e.getMessage();
+            } finally {
+                try {
+                    socket.setSoTimeout(5000); // Возвращаем стандартный таймаут
+                } catch (Exception e) {
+                    // Игнорируем
+                }
             }
-        });
-
-        try {
-            return future.get(timeoutMs + 100, TimeUnit.MILLISECONDS);
-        } catch (Exception e) {
-            return "ERROR:" + e.getMessage();
         }
     }
 }

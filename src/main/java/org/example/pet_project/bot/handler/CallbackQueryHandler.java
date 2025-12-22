@@ -98,15 +98,11 @@ public class CallbackQueryHandler {
                     break;
 
                 case "RELAY:0:ON":
-                    responce = arduinoCommandService.setRelay(0, true);
-                    System.out.println("Responce from Arduino: " + responce);
-                    result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU);
+                    result.setRelayAction(CallbackResult.CallbackAction.SHOW_ARDUINO_RESPONSE_RELAY, 0, true);
                     break;
 
                 case "RELAY:0:OFF":
-                    responce = arduinoCommandService.setRelay(0, false);
-                    System.out.println("Responce from Arduino: " + responce);
-                    result.setAction(CallbackResult.CallbackAction.SHOW_MAIN_MENU);
+                    result.setRelayAction(CallbackResult.CallbackAction.SHOW_ARDUINO_RESPONSE_RELAY, 0, false);
                     break;
 
                 case "GETALL":
@@ -116,11 +112,15 @@ public class CallbackQueryHandler {
                     break;
 
                 case "STATUS":
-                    responce = arduinoCommandService.getStatus();
-                    System.out.println("Responce from Arduino: " + responce);
-                    result.setAction(CallbackResult.CallbackAction.SHOW_ARDUINO_RESPONSE);
+                    result.setAction(CallbackResult.CallbackAction.SHOW_ARDUINO_RESPONSE_STATUS);
+                    break;
 
+                case "Connect":
+                    result.setConnectAction(CallbackResult.CallbackAction.SHOW_ARDUINO_CONNECT_STATUS, true);
+                    break;
 
+                case "Disconnect":
+                    result.setConnectAction(CallbackResult.CallbackAction.SHOW_ARDUINO_CONNECT_STATUS, false);
                     break;
             }
         }
@@ -149,6 +149,19 @@ public class CallbackQueryHandler {
         private long chatId;
         private CallbackAction action;
         private String currencyCode;
+        private static int relayNumber;
+        private static boolean relayStatus;
+        private static boolean connect;
+
+        public static int getRelayNumber() {
+            return relayNumber;
+        }
+        public static boolean getRelayStatus() {
+            return relayStatus;
+        }
+        public static boolean connect() {
+            return connect;
+        }
 
         // Вынесенный enum для действий
         public enum CallbackAction {
@@ -160,7 +173,9 @@ public class CallbackQueryHandler {
             SHOW_ABOUT_MENU,
             SHOW_ALL_CURRENCIES,
             DELETE_PREVIOUS_MENU,
-            SHOW_ARDUINO_RESPONSE
+            SHOW_ARDUINO_RESPONSE_STATUS,
+            SHOW_ARDUINO_CONNECT_STATUS,
+            SHOW_ARDUINO_RESPONSE_RELAY
         }
 
         // Геттеры и сеттеры
@@ -180,10 +195,21 @@ public class CallbackQueryHandler {
             this.action = action;
         }
 
+        public void setConnectAction(CallbackAction action, boolean connect) {
+            this.action = action;
+            this.connect = connect;
+        }
+
+        public void setRelayAction(CallbackAction action, int number, boolean status) {
+            this.action = action;
+            this.relayNumber = number;
+            this.relayStatus = status;
+
+        }
+
         public String getCurrencyCode() {
             return currencyCode;
         }
-
 
         public void setCurrencyCode(String currencyCode) {
             this.currencyCode = currencyCode;
