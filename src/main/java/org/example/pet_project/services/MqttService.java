@@ -72,18 +72,18 @@ public class MqttService {
             return "❌ Ошибка получения алертов: " + e.getMessage();
         }
     }
-
-    /**
-     * Проверить доступность брокера
-     */
-    public boolean isBrokerAvailable() {
-        try {
-            Map<String, Object> health = mqttBrokerClient.healthCheck();
-            return "UP".equals(health.get("status"));
-        } catch (Exception e) {
-            return false;
-        }
-    }
+//
+//    /**
+//     * Проверить доступность брокера
+//     */
+//    public boolean isBrokerAvailable() {
+//        try {
+//            Map<String, Object> health = mqttBrokerClient.healthCheck();
+//            return "UP".equals(health.get("status"));
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
 
     private String formatTime(String timestamp) {
         // Простая форматировка времени

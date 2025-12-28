@@ -41,6 +41,9 @@ public class MainMenu extends BaseMenu {
                 .button("Disconnect", "Disconnect")
                 .endRow()
                 .row()
+                .button("Климат", "Climate")
+                .endRow()
+                .row()
                 .button("❓ Помощь", MenuConfig.CB_HELP)
                 .button("ℹ️ О боте", MenuConfig.CB_ABOUT)
                 .endRow();

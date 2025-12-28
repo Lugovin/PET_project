@@ -6,6 +6,7 @@ import org.example.pet_project.arduino.ArduinoConnectService;
 import org.example.pet_project.bot.handler.CallbackQueryHandler;
 import org.example.pet_project.bot.handler.MessageHandler;
 import org.example.pet_project.config.BotProperties;
+import org.example.pet_project.services.ESP32Service;
 import org.example.pet_project.services.MenuService;
 import org.example.pet_project.services.UserSessionService;
 import org.example.pet_project.services.ValuteService;
@@ -34,6 +35,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final UserSessionService userSessionService;
     private final ArduinoCommandService arduinoCommandService;
     private final ArduinoConnectService arduinoConnectService;
+    private final ESP32Service esp32Service;
 
     public TelegramBot(BotProperties botProperties,
                        ValuteService valuteService,
@@ -41,8 +43,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                        MessageHandler messageHandler,
                        CallbackQueryHandler callbackQueryHandler,
                        UserSessionService userSessionService,
-                        ArduinoConnectService arduinoConnectService,
-                       ArduinoCommandService arduinoCommandService) {
+                       ArduinoConnectService arduinoConnectService,
+                       ArduinoCommandService arduinoCommandService,
+                       ESP32Service esp32Service) {
         this.botProperties = botProperties;
         this.valuteService = valuteService;
         this.menuService = menuService;
@@ -51,6 +54,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         this.userSessionService = userSessionService;
         this.arduinoConnectService = arduinoConnectService;
         this.arduinoCommandService = arduinoCommandService;
+        this.esp32Service = esp32Service;
     }
 
     @Override
@@ -199,6 +203,10 @@ public class TelegramBot extends TelegramLongPollingBot {
             case SHOW_ARDUINO_CONNECT_STATUS:
                 showArduinoConnectResponce(chatId, CallbackQueryHandler.CallbackResult.connect());
                 break;
+
+            case SHOW_ESP32_CLIMATE:
+                showArduinoStatusResponce(chatId, esp32Service.getAllSensorsData());
+                break;
         }
 
         // Отправляем ответ на callback (убирает "часики" у кнопки)
@@ -289,7 +297,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-
 
     public void send(SendMessage message) {
         try {

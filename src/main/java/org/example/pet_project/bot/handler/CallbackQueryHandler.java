@@ -122,6 +122,10 @@ public class CallbackQueryHandler {
                 case "Disconnect":
                     result.setConnectAction(CallbackResult.CallbackAction.SHOW_ARDUINO_CONNECT_STATUS, false);
                     break;
+
+                case "Climate":
+                    result.setAction(CallbackResult.CallbackAction.SHOW_ESP32_CLIMATE);
+                    break;
             }
         }
 
@@ -156,9 +160,11 @@ public class CallbackQueryHandler {
         public static int getRelayNumber() {
             return relayNumber;
         }
+
         public static boolean getRelayStatus() {
             return relayStatus;
         }
+
         public static boolean connect() {
             return connect;
         }
@@ -175,7 +181,8 @@ public class CallbackQueryHandler {
             DELETE_PREVIOUS_MENU,
             SHOW_ARDUINO_RESPONSE_STATUS,
             SHOW_ARDUINO_CONNECT_STATUS,
-            SHOW_ARDUINO_RESPONSE_RELAY
+            SHOW_ARDUINO_RESPONSE_RELAY,
+            SHOW_ESP32_CLIMATE
         }
 
         // Геттеры и сеттеры
