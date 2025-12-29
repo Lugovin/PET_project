@@ -133,11 +133,11 @@ public class CallbackQueryHandler {
                     break;
 
                 case "Room1":
-                    result.setSensorAction(CallbackResult.CallbackAction.SHOW_ESP32_CLIMATE_ROOM, "Room1");
+                    result.setSensorAction(CallbackResult.CallbackAction.SHOW_ESP32_CLIMATE_ROOM, "room1");
                     break;
 
                 case "Room2":
-                    result.setSensorAction(CallbackResult.CallbackAction.SHOW_ESP32_CLIMATE_ROOM, "Room2");
+                    result.setSensorAction(CallbackResult.CallbackAction.SHOW_ESP32_CLIMATE_ROOM, "room2");
                     break;
             }
         }
