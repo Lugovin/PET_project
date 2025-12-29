@@ -3,12 +3,7 @@ package org.example.pet_project.services;
 import org.example.pet_project.builder.InlineKeyboardBuilder;
 import org.example.pet_project.builder.MessageBuilder;
 import org.example.pet_project.config.MenuConfig;
-import org.example.pet_project.menu.AboutMenu;
-import org.example.pet_project.menu.ArduinoAnswerMenu;
-import org.example.pet_project.menu.CurrencyMenu;
-import org.example.pet_project.menu.HelpMenu;
-import org.example.pet_project.menu.MainMenu;
-import org.example.pet_project.menu.SettingsMenu;
+import org.example.pet_project.menu.*;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -25,6 +20,7 @@ public class MenuService {
     private final HelpMenu helpMenu;
     private final AboutMenu aboutMenu;
     private final ArduinoAnswerMenu arduinoAnswerMenu;
+    private final ClimatMenu climatMenu;
 
     public MenuService(MenuConfig config,
                        MainMenu mainMenu,
@@ -32,7 +28,7 @@ public class MenuService {
                        SettingsMenu settingsMenu,
                        HelpMenu helpMenu,
                        AboutMenu aboutMenu,
-                       ArduinoAnswerMenu arduinoAnswerMenu) {
+                       ArduinoAnswerMenu arduinoAnswerMenu, ClimatMenu climatMenu) {
         this.config = config;
         this.mainMenu = mainMenu;
         this.currencyMenu = currencyMenu;
@@ -40,6 +36,7 @@ public class MenuService {
         this.helpMenu = helpMenu;
         this.aboutMenu = aboutMenu;
         this.arduinoAnswerMenu = arduinoAnswerMenu;
+        this.climatMenu = climatMenu;
     }
 
     // Геттеры для констант (чтобы другие классы могли их использовать)
@@ -85,6 +82,10 @@ public class MenuService {
 
     public SendMessage createMainMenu(long chatId) {
         return mainMenu.createMenu(chatId);
+    }
+
+    public SendMessage createClimatMenu(long chatId) {
+        return climatMenu.createMenu(chatId);
     }
 
     public SendMessage createCurrencyMenu(long chatId) {

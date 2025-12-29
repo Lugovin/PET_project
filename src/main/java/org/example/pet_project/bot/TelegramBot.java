@@ -61,7 +61,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     public String getBotUsername() {
         return botProperties.getName();
     }
-
     @Override
     public String getBotToken() {
         return botProperties.getToken();
@@ -133,6 +132,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                 sendMenu(menuService.createHelpMenu(chatId), chatId);
                 break;
 
+            case CLIMAT_MENU:
+                sendMenu(menuService.createClimatMenu(chatId), chatId);
+                break;
+
+
+
             default:
                 sendMenu(menuService.createMainMenu(chatId), chatId);
         }
@@ -176,6 +181,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                 sendMenu(menuService.createCurrencyMenu(chatId), chatId);
                 break;
 
+            case SHOW_CLIMATE_MENU:
+                sendMenu(menuService.createClimatMenu(chatId), chatId);
+                break;
+
             case SHOW_CURRENCY_RATE:
                 showCurrencyRate(chatId, result.getCurrencyCode());
                 break;
@@ -206,6 +215,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             case SHOW_ESP32_CLIMATE:
                 showArduinoStatusResponce(chatId, esp32Service.getAllSensorsData());
+                break;
+
+            case SHOW_ESP32_CLIMATE_ROOM:
+                showESP32SensorResponce(chatId, CallbackQueryHandler.CallbackResult.getSensorId());
                 break;
         }
 
@@ -249,8 +262,15 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void showArduinoRelayResponce(long chatId, int number, boolean status) {
         try {
-            //arduinoCommandService.setRelay(number, status);
             execute(menuService.createArduinoAnswerMenu(chatId, arduinoCommandService.setRelay(number, status)));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showESP32SensorResponce(long chatId, String sensorId) {
+        try {
+            execute(menuService.createArduinoAnswerMenu(chatId, esp32Service.getSensorData(sensorId)));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

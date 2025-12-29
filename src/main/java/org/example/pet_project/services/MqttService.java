@@ -17,61 +17,61 @@ public class MqttService {
 
     /**
      * Получить температуру для показа в Telegram
-     */
-    public String getTemperatureMessage(String sensorId) {
-        try {
-            Map<String, Object> response = mqttBrokerClient.getTemperature(sensorId);
-
-            if ("success".equals(response.get("status"))) {
-                if (sensorId != null) {
-                    // Данные конкретного датчика
-                    Double temp = (Double) response.get("temperature");
-                    String location = (String) response.get("location");
-                    String timestamp = (String) response.get("timestamp");
-
-                    return String.format(
-                            "🌡️ Температура в %s\n" +
-                                    "Температура: %.1f°C\n" +
-                                    "Время: %s",
-                            location != null ? location : sensorId,
-                            temp,
-                            formatTime(timestamp)
-                    );
-                } else {
-                    // Все датчики
-                    return formatAllTemperatures(response);
-                }
-            } else {
-                return "❌ Нет данных от датчиков";
-            }
-
-        } catch (Exception e) {
-            return "❌ Ошибка получения данных: " + e.getMessage();
-        }
-    }
-
-    /**
-     * Получить алерты
-     */
-    public String getAlertsMessage() {
-        try {
-            Map<String, Object> response = mqttBrokerClient.getAlerts();
-
-            if ("success".equals(response.get("status"))) {
-                Integer count = (Integer) response.get("count");
-                if (count != null && count > 0) {
-                    return formatAlerts(response);
-                } else {
-                    return "✅ Все датчики в норме";
-                }
-            } else {
-                return "❌ Нет данных об алертах";
-            }
-
-        } catch (Exception e) {
-            return "❌ Ошибка получения алертов: " + e.getMessage();
-        }
-    }
+//     */
+//    public String getTemperatureMessage(String sensorId) {
+//        try {
+//            Map<String, Object> response = mqttBrokerClient.getTemperature(sensorId);
+//
+//            if ("success".equals(response.get("status"))) {
+//                if (sensorId != null) {
+//                    // Данные конкретного датчика
+//                    Double temp = (Double) response.get("temperature");
+//                    String location = (String) response.get("location");
+//                    String timestamp = (String) response.get("timestamp");
+//
+//                    return String.format(
+//                            "🌡️ Температура в %s\n" +
+//                                    "Температура: %.1f°C\n" +
+//                                    "Время: %s",
+//                            location != null ? location : sensorId,
+//                            temp,
+//                            formatTime(timestamp)
+//                    );
+//                } else {
+//                    // Все датчики
+//                    return formatAllTemperatures(response);
+//                }
+//            } else {
+//                return "❌ Нет данных от датчиков";
+//            }
+//
+//        } catch (Exception e) {
+//            return "❌ Ошибка получения данных: " + e.getMessage();
+//        }
+//    }
+//
+//    /**
+//     * Получить алерты
+//     */
+//    public String getAlertsMessage() {
+//        try {
+//            Map<String, Object> response = mqttBrokerClient.getAlerts();
+//
+//            if ("success".equals(response.get("status"))) {
+//                Integer count = (Integer) response.get("count");
+//                if (count != null && count > 0) {
+//                    return formatAlerts(response);
+//                } else {
+//                    return "✅ Все датчики в норме";
+//                }
+//            } else {
+//                return "❌ Нет данных об алертах";
+//            }
+//
+//        } catch (Exception e) {
+//            return "❌ Ошибка получения алертов: " + e.getMessage();
+//        }
+//    }
 //
 //    /**
 //     * Проверить доступность брокера

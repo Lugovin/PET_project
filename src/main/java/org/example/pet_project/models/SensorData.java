@@ -1,6 +1,7 @@
 package org.example.pet_project.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record SensorData(String sensorId,
                          Double temperature,
@@ -75,6 +76,8 @@ public record SensorData(String sensorId,
         if (pressure < 1000) return "🌤️";
         return "☀️";
     }
+
+
 }
 
 

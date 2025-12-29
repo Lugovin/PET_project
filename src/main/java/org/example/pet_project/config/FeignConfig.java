@@ -2,6 +2,8 @@ package org.example.pet_project.config;
 
 import feign.Logger;
 import feign.RequestInterceptor;
+import feign.codec.ErrorDecoder;
+import org.example.pet_project.mqtt.FeignSensorErrorDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,5 +22,10 @@ public class FeignConfig {
             requestTemplate.header("User-Agent", "TelegramBot");
             requestTemplate.header("Accept", "application/json");
         };
+    }
+
+    @Bean
+    public ErrorDecoder errorDecoder() {
+        return new FeignSensorErrorDecoder();
     }
 }

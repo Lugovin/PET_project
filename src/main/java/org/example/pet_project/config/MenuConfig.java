@@ -12,6 +12,7 @@ public class MenuConfig {
     // Константы для callback данных
     public static final String CB_MAIN_MENU = "MAIN_MENU";
     public static final String CB_CURRENCY_MENU = "CURRENCY_MENU";
+    public static final String CB_CLIMAT_MENU = "CLIMAT_MENU";
     public static final String CB_CURRENCY_SELECT = "CURR_";
     public static final String CB_SETTINGS = "SETTINGS";
     public static final String CB_HELP = "HELP";
@@ -43,6 +44,7 @@ public class MenuConfig {
         }
 
         public static final String MAIN_MENU_TITLE = "🏦 *Главное меню*";
+        public static final String CLIMAT_MENU_TITLE = "🏦 *Меню климата*";
         public static final String CURRENCY_MENU_TITLE = "💱 *Выбор валюты*\nВведите код валюты или выберите из списка:";
         public static final String SETTINGS_MENU_TITLE = "⚙️ *Настройки*\n\nЗдесь вы можете настроить параметры бота.\nФункционал настроек будет добавлен в будущих обновлениях.";
         public static final String HELP_MENU_TITLE = "❓ *Помощь*\n\n*Основные команды:*\n`/start` - Начать работу с ботом\n`/menu` - Показать главное меню\n`/valute` - Показать курсы валют\n`/help` - Показать это сообщение\n\n*Как использовать:*\n1. Выберите валюту из меню\n2. Или введите код валюты (например: USD, EUR)\n3. Получите актуальный курс ЦБ РФ";

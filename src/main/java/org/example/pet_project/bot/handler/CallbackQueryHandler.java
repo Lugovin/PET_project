@@ -62,6 +62,11 @@ public class CallbackQueryHandler {
                     result.setAction(CallbackResult.CallbackAction.SHOW_CURRENCY_MENU); // ← ИСПРАВЛЕНО
                     break;
 
+                case MenuConfig.CB_CLIMAT_MENU:
+                    userSessionService.setUserState(chatId, UserSessionService.UserState. CLIMAT_MENU);
+                    result.setAction(CallbackResult.CallbackAction.SHOW_CLIMATE_MENU); // ← ИСПРАВЛЕНО
+                    break;
+
                 case MenuConfig.CB_ALL_CURRENCIES:
                     userSessionService.setUserState(chatId, UserSessionService.UserState.ALL_CURRENCIES);
                     result.setAction(CallbackResult.CallbackAction.SHOW_ALL_CURRENCIES); // ← ИСПРАВЛЕНО
@@ -126,6 +131,14 @@ public class CallbackQueryHandler {
                 case "Climate":
                     result.setAction(CallbackResult.CallbackAction.SHOW_ESP32_CLIMATE);
                     break;
+
+                case "Room1":
+                    result.setSensorAction(CallbackResult.CallbackAction.SHOW_ESP32_CLIMATE_ROOM, "Room1");
+                    break;
+
+                case "Room2":
+                    result.setSensorAction(CallbackResult.CallbackAction.SHOW_ESP32_CLIMATE_ROOM, "Room2");
+                    break;
             }
         }
 
@@ -153,12 +166,17 @@ public class CallbackQueryHandler {
         private long chatId;
         private CallbackAction action;
         private String currencyCode;
+        private static String sensorId;
         private static int relayNumber;
         private static boolean relayStatus;
         private static boolean connect;
 
         public static int getRelayNumber() {
             return relayNumber;
+        }
+
+        public static String getSensorId() {
+            return sensorId;
         }
 
         public static boolean getRelayStatus() {
@@ -173,6 +191,7 @@ public class CallbackQueryHandler {
         public enum CallbackAction {
             SHOW_MAIN_MENU,
             SHOW_CURRENCY_MENU,
+            SHOW_CLIMATE_MENU,
             SHOW_CURRENCY_RATE,
             SHOW_SETTINGS_MENU,
             SHOW_HELP_MENU,
@@ -182,7 +201,8 @@ public class CallbackQueryHandler {
             SHOW_ARDUINO_RESPONSE_STATUS,
             SHOW_ARDUINO_CONNECT_STATUS,
             SHOW_ARDUINO_RESPONSE_RELAY,
-            SHOW_ESP32_CLIMATE
+            SHOW_ESP32_CLIMATE,
+            SHOW_ESP32_CLIMATE_ROOM
         }
 
         // Геттеры и сеттеры
@@ -205,6 +225,11 @@ public class CallbackQueryHandler {
         public void setConnectAction(CallbackAction action, boolean connect) {
             this.action = action;
             this.connect = connect;
+        }
+
+        public void setSensorAction(CallbackAction action, String sensorId) {
+            this.action = action;
+            this.sensorId = sensorId;
         }
 
         public void setRelayAction(CallbackAction action, int number, boolean status) {

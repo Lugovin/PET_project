@@ -13,6 +13,7 @@ public class UserSessionService {
 
     public enum UserState {
         MAIN_MENU,
+        CLIMAT_MENU,
         CURRENCY_SELECTION,
         VIEWING_CURRENCY,
         SETTINGS,
