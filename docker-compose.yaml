@@ -1,35 +1,27 @@
+version: "3.9"
+
 services:
-  postgres:
-    image: 'postgres:14-alpine'
-    container_name: postgres
+  mqtt-broker:
+    image: pet-mqtt-broker:latest
+    container_name: mqtt-broker
     ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres_pet_project
-    volumes:
-      - ./imports/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - "8081:8081"
+      - "1883:1883"
+    networks:
+      - pet-network
 
-
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    restart: "no"
+  pet-app:
+    image: my-pet-project:latest
+    container_name: pet-app
     ports:
-      - "5051:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
-      - ./docker/pgadmin/pgpass:/pgadmin4/pgpass
+      - "8080:8080"
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
-    healthcheck:
-      test: wget --no-verbose --tries=1 --spider http://localhost:80/misc/ping || exit -1
-      interval: 10s
-      timeout: 5s
-      start_period: 10s
-      retries: 5
-    entrypoint: /bin/sh -c "chmod 600 /pgadmin4/pgpass; /entrypoint.sh;"
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - mqtt-broker
+    networks:
+      - pet-network
+
+networks:
+  pet-network:
+    driver: bridge

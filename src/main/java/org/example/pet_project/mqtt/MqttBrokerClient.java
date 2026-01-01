@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 @Component
 // Feign клиент для общения с MQTT брокером
-@FeignClient(name = "mqtt-broker", url = "${mqtt.broker.url:http://localhost:8081}", configuration = FeignConfig.class)
+@FeignClient(name = "mqtt-broker", url = "${mqtt.broker.url}", configuration = FeignConfig.class)
 public interface MqttBrokerClient {
 
 
