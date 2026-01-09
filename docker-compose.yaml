@@ -7,6 +7,8 @@ services:
     ports:
       - "8081:8081"
       - "1883:1883"
+    environment:
+      - TZ=Europe/Moscow
     networks:
       - pet-network
 
@@ -17,6 +19,7 @@ services:
       - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      TZ: Europe/Moscow
     depends_on:
       - mqtt-broker
     networks:
