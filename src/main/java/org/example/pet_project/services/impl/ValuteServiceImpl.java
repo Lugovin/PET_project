@@ -2,7 +2,6 @@ package org.example.pet_project.services.impl;
 
 import org.example.pet_project.services.ValuteService;
 import org.json.JSONObject;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -33,7 +32,7 @@ public class ValuteServiceImpl implements ValuteService {
             throw new IOException();
         }
         return "Официальный курс рубля:  \n" +
-               " " + data.get("Nominal") + " " + valuteCode + " = " + data.get("Value") + " RUB.";
+                " " + data.get("Nominal") + " " + valuteCode + " = " + data.get("Value") + " RUB.";
     }
 
     private static Map<String, Map<String, Object>> getAndParseValuteList() throws IOException {
@@ -67,22 +66,4 @@ public class ValuteServiceImpl implements ValuteService {
         return currencyData;
     }
 
-
-    //   * Получить все доступные валюты (код -> название)
-
-    public Map<String, String> getAllCurrencies() throws IOException {
-        Map<String, String> currencies = new HashMap<>();
-
-        // Получаем данные о валютах
-        Map<String, Map<String, Object>> currencyData = getAndParseValuteList();
-
-        for (Map.Entry<String, Map<String, Object>> entry : currencyData.entrySet()) {
-            String currencyCode = entry.getKey();
-            Map<String, Object> data = entry.getValue();
-            String currencyName = (String) data.get("Name");
-            currencies.put(currencyCode, currencyName);
-        }
-
-        return currencies;
-    }
 }

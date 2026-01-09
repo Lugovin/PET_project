@@ -1,11 +1,11 @@
 package org.example.pet_project.bot;
 
 
-import org.example.pet_project.arduino.ArduinoCommandService;
-import org.example.pet_project.arduino.ArduinoConnectService;
+
 import org.example.pet_project.bot.handler.CallbackQueryHandler;
 import org.example.pet_project.bot.handler.MessageHandler;
 import org.example.pet_project.config.BotProperties;
+import org.example.pet_project.models.UserState;
 import org.example.pet_project.services.ESP32Service;
 import org.example.pet_project.services.MenuService;
 import org.example.pet_project.services.UserSessionService;
@@ -33,8 +33,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final MessageHandler messageHandler;
     private final CallbackQueryHandler callbackQueryHandler;
     private final UserSessionService userSessionService;
-    private final ArduinoCommandService arduinoCommandService;
-    private final ArduinoConnectService arduinoConnectService;
     private final ESP32Service esp32Service;
 
     public TelegramBot(BotProperties botProperties,
@@ -43,8 +41,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                        MessageHandler messageHandler,
                        CallbackQueryHandler callbackQueryHandler,
                        UserSessionService userSessionService,
-                       ArduinoConnectService arduinoConnectService,
-                       ArduinoCommandService arduinoCommandService,
                        ESP32Service esp32Service) {
         this.botProperties = botProperties;
         this.valuteService = valuteService;
@@ -52,8 +48,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         this.messageHandler = messageHandler;
         this.callbackQueryHandler = callbackQueryHandler;
         this.userSessionService = userSessionService;
-        this.arduinoConnectService = arduinoConnectService;
-        this.arduinoCommandService = arduinoCommandService;
         this.esp32Service = esp32Service;
     }
 
@@ -61,6 +55,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public String getBotUsername() {
         return botProperties.getName();
     }
+
     @Override
     public String getBotToken() {
         return botProperties.getToken();
@@ -96,7 +91,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         messageHandler.handleMessage(message);
 
         // Получаем текущее состояние
-        UserSessionService.UserState currentState = messageHandler.getUserState(chatId);
+        UserState currentState = messageHandler.getUserState(chatId);
 
         // Выполняем действие в зависимости от состояния
         switch (currentState) {
@@ -133,9 +128,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                 break;
 
             case CLIMAT_MENU:
-                sendMenu(menuService.createClimatMenu(chatId), chatId);
+                sendMenu(menuService.createClimateMenu(chatId), chatId);
                 break;
-
 
 
             default:
@@ -152,7 +146,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             @Override
             public void run() {
                 try {
-                    userSessionService.setUserState(chatId, UserSessionService.UserState.MAIN_MENU);
+                    userSessionService.setUserState(chatId, UserState.MAIN_MENU);
                     sendMenu(menuService.createMainMenu(chatId), chatId);
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
@@ -182,7 +176,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 break;
 
             case SHOW_CLIMATE_MENU:
-                sendMenu(menuService.createClimatMenu(chatId), chatId);
+                sendMenu(menuService.createClimateMenu(chatId), chatId);
                 break;
 
             case SHOW_CURRENCY_RATE:
@@ -199,18 +193,6 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             case SHOW_ABOUT_MENU:
                 execute(menuService.createAboutMenu(chatId));
-                break;
-
-            case SHOW_ARDUINO_RESPONSE_STATUS:
-                showArduinoStatusResponce(chatId, arduinoCommandService.getStatus());
-                break;
-
-            case SHOW_ARDUINO_RESPONSE_RELAY:
-                showArduinoRelayResponce(chatId, CallbackQueryHandler.CallbackResult.getRelayNumber(), CallbackQueryHandler.CallbackResult.getRelayStatus());
-                break;
-
-            case SHOW_ARDUINO_CONNECT_STATUS:
-                showArduinoConnectResponce(chatId, CallbackQueryHandler.CallbackResult.connect());
                 break;
 
             case SHOW_ESP32_CLIMATE:
@@ -260,29 +242,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void showArduinoRelayResponce(long chatId, int number, boolean status) {
-        try {
-            execute(menuService.createArduinoAnswerMenu(chatId, arduinoCommandService.setRelay(number, status)));
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void showESP32SensorResponce(long chatId, String sensorId) {
         try {
             execute(menuService.createArduinoAnswerMenu(chatId, esp32Service.getSensorData(sensorId)));
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void showArduinoConnectResponce(long chatId, boolean status) {
-        try {
-            if (status) {
-                execute(menuService.createArduinoAnswerMenu(chatId, arduinoConnectService.connect()));
-            } else {
-                execute(menuService.createArduinoAnswerMenu(chatId, arduinoConnectService.disconnect()));
-            }
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

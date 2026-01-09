@@ -29,7 +29,6 @@ public class ClimatMenu extends BaseMenu {
                 .endRow()
                 .row()
                 .button("🏠 Главная", MenuConfig.CB_MAIN_MENU)
-                .button("🔙 Назад", MenuConfig.CB_BACK)
                 .endRow();
 
 

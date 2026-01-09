@@ -22,7 +22,6 @@ public class AboutMenu extends BaseMenu {
         var keyboard = InlineKeyboardBuilder.create()
                 .row()
                 .button("🏠 Главная", MenuConfig.CB_MAIN_MENU)
-                .button("💱 К валютам", MenuConfig.CB_CURRENCY_MENU)
                 .endRow()
                 .build();
 

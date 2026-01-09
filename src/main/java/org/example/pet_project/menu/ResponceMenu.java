@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 @Component
-public class ArduinoAnswerMenu extends BaseMenu {
-    protected ArduinoAnswerMenu(MenuConfig config) {
+public class ResponceMenu extends BaseMenu {
+    protected ResponceMenu(MenuConfig config) {
         super(config);
     }
 
@@ -18,10 +18,11 @@ public class ArduinoAnswerMenu extends BaseMenu {
         return null;
     }
 
-    public SendMessage createArduinoResponceMenu(long chatId, String responce) {
+    public SendMessage createResponceMenu(long chatId, String responce) {
         var keyboard = InlineKeyboardBuilder.create()
                 .row()
                 .button("🏠 Главная", MenuConfig.CB_MAIN_MENU)
+                .button("🔙 Назад", MenuConfig.CB_BACK)
                 .endRow()
                 .build();
 

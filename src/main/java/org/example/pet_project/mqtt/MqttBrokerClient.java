@@ -21,8 +21,6 @@ import java.util.Map;
 @FeignClient(name = "mqtt-broker", url = "${mqtt.broker.url}", configuration = FeignConfig.class)
 public interface MqttBrokerClient {
 
-
-
     /**
      * Получить данные конкретного датчика
      */

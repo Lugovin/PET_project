@@ -21,7 +21,6 @@ public class HelpMenu extends BaseMenu {
     public SendMessage createMenu(long chatId) {
         var keyboard = InlineKeyboardBuilder.create()
                 .row()
-                .button("💱 К валютному меню", MenuConfig.CB_CURRENCY_MENU)
                 .button("🔙 Назад", MenuConfig.CB_BACK)
                 .endRow()
                 .build();

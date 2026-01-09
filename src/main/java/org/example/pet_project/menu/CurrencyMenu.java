@@ -35,8 +35,7 @@ public class CurrencyMenu extends BaseMenu {
                 .button("🇷🇺 RUB", MenuConfig.CB_CURRENCY_SELECT + "RUB")
                 .endRow()
                 .row()
-                .button("📋 Все валюты", MenuConfig.CB_ALL_CURRENCIES)
-                .button("🔙 Назад", MenuConfig.CB_BACK)
+                .button("🏠 Главная", MenuConfig.CB_MAIN_MENU)
                 .endRow()
                 .build();
 
@@ -52,8 +51,8 @@ public class CurrencyMenu extends BaseMenu {
     public SendMessage createResultMenu(long chatId, String currencyInfo) {
         var keyboard = InlineKeyboardBuilder.create()
                 .row()
-                .button("📊 Еще валюты", MenuConfig.CB_CURRENCY_MENU)
                 .button("🏠 Главная", MenuConfig.CB_MAIN_MENU)
+                .button("🔙 Назад", MenuConfig.CB_CURRENCY_MENU)
                 .endRow()
                 .build();
 
@@ -63,20 +62,5 @@ public class CurrencyMenu extends BaseMenu {
                 .build();
     }
 
-//
-//    /**
-//     * Создает меню с выводом ответа от ардуино ВРЕМЕННОООО!!!!!!!
-//     */
-//    public SendMessage createArduinoAnswerMessage(long chatId, String answer) {
-//        var keyboard = InlineKeyboardBuilder.create()
-//                .row()
-//                .button("🏠 Главная", MenuConfig.CB_MAIN_MENU)
-//                .endRow()
-//                .build();
-//
-//        return MessageBuilder.create(chatId)
-//                .text(answer)
-//                .inlineKeyboard(keyboard)
-//                .build();
-//    }
+
 }
